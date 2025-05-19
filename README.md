@@ -1,4 +1,129 @@
-# terraform-cato-vsocket-aws-tgw-ha
+# CATO VSOCKET AWS Transit Gateway Terraform module
+
+Terraform module which creates a VPC, required subnets, elastic network interfaces, security groups, route tables, an AWS Socket Site in the Cato Management Application (CMA), and deploys a virtual socket ec2 instance in AWS.  Then attaches the deployment to a transit gateway and specifies a default route to send traffic to the virtual socket ec2 instance.
+
+For the vpc_id and internet_gateway_id leave null to create new or add an id of the already created resources to use existing.
+
+Requires an aws transit gateway ID (tgw_id) and transit gateway route table ID (tgw_route_table_id) to connect with.
+
+<details>
+<summary>Example AWS VPC and Internet Gateway Resources</summary>
+
+Create the AWS VPC and Internet Gateway resources using the following example, and create these resources first before running the module:
+
+```hcl
+resource "aws_vpc" "cato-vpc" {
+  cidr_block = var.vpc_range
+  tags = {
+    Name = "${var.site_name}-VPC"
+  }
+}
+
+resource "aws_internet_gateway" "internet_gateway" {
+  tags = {
+    Name = "${var.site_name}-IGW"
+  }
+  vpc_id = aws_vpc.cato-vpc.id
+}
+
+terraform apply -target=aws_vpc.cato-vpc -target=aws_internet_gateway.internet_gateway
+```
+
+Reference the resources as input variables with the following syntax:
+```hcl
+  vpc_id           = aws_vpc.cato-vpc.id
+  internetGateway  = aws_internet_gateway.internet_gateway.id 
+```
+
+</details>
+
+## NOTE
+- For help with finding exact sytax to match site location for city, state_name, country_name and timezone, please refer to the [cato_siteLocation data source](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/siteLocation).
+- For help with finding a license id to assign, please refer to the [cato_licensingInfo data source](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/licensingInfo).
+
+## Usage
+
+```hcl
+provider "cato" {
+  baseurl    = var.baseurl
+  account_id = var.account_id
+  token      = var.token
+}
+
+provider "aws" {
+  region = var.region
+}
+
+variable "baseurl" {}
+variable "account_id" {}
+variable "token" {}
+variable "region" {
+  default = "us-west-2"
+}
+
+
+module "tgw" {
+  source                      = "catonetworks/vsocket-aws-tgw-ha/cato"
+  token                       = var.token
+  account_id                  = var.account_id
+  vpc_id                      = null
+  internet_gateway_id         = null
+  key_pair                    = "Your-key-pair-name-here"
+  vpc_network_range           = "10.132.0.0/22"
+  native_network_range        = "10.128.0.0/13"
+  subnet_range_mgmt_primary   = "10.132.0.0/25"
+  subnet_range_mgmt_secondary = "10.132.0.128/25"
+  subnet_range_wan_primary    = "10.132.1.0/25"
+  subnet_range_wan_secondary  = "10.132.1.128/25"
+  subnet_range_lan_primary    = "10.132.2.0/25"
+  subnet_range_lan_secondary  = "10.132.2.128/25"
+  subnet_range_tgw_primary    = "10.132.3.0/25"
+  subnet_range_tgw_secondary  = "10.132.3.128/25"
+  mgmt_eni_primary_ip         = "10.132.0.5"
+  mgmt_eni_secondary_ip       = "10.132.0.133"
+  wan_eni_primary_ip          = "10.132.1.5"
+  wan_eni_secondary_ip        = "10.132.1.133"
+  lan_eni_primary_ip          = "10.132.2.5"
+  lan_eni_secondary_ip        = "10.132.2.133"
+  ingress_cidr_blocks         = ["0.0.0.0/0"]
+  site_name                   = "Your-Cato-site-name-here"
+  tgw_id                      = "tgw-01234567890abcdef"
+  tgw_route_table_id          = "tgw-rtb-01234567890abcdef"
+  site_description            = "Your Cato site desc here"
+  site_location = {
+    city         = "New York City"
+    country_code = "US"
+    state_code   = "US-NY" ## Optional - for countries with states"
+    timezone     = "America/New_York"
+  }
+  tags = {
+    Environment = "Production"
+    Owner       = "Operations Team"
+  }
+}
+```
+
+## Site Location Reference
+
+For more information on site_location syntax, use the [Cato CLI](https://github.com/catonetworks/cato-cli) to lookup values.
+
+```bash
+$ pip3 install catocli
+$ export CATO_TOKEN="your-api-token-here"
+$ export CATO_ACCOUNT_ID="your-account-id"
+$ catocli query siteLocation -h
+$ catocli query siteLocation '{"filters":[{"search": "San Diego","field":"city","operation":"exact"}]}' -p
+```
+
+## Authors
+
+Module is maintained by [Cato Networks](https://github.com/catonetworks) with help from [these awesome contributors](https://github.com/catonetworks/terraform-cato-vsocket-aws-vpc/graphs/contributors).
+
+## License
+
+Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-vsocket-aws-vpc/tree/master/LICENSE) for full details.
+
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -17,7 +142,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cato_deployment"></a> [cato\_deployment](#module\_cato\_deployment) | ./modules/terraform-cato-vsocket-aws-ha-vpc | n/a |
+| <a name="module_cato_deployment"></a> [cato\_deployment](#module\_cato\_deployment) | catonetworks/vsocket-aws-ha-vpc/cato | ~> 0.0.10 |
 
 ## Resources
 

@@ -1,6 +1,7 @@
 
 module "cato_deployment" {
-  source                      = "../terraform-cato-vsocket-aws-ha-vpc"
+  source                      = "catonetworks/vsocket-aws-ha-vpc/cato"
+  version                     = "~> 0.0.10"
   token                       = var.token
   account_id                  = var.account_id
   vpc_id                      = var.vpc_id
