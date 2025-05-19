@@ -35,3 +35,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# Ignore Crappy Mac Fork Files 
+.DS_Store
+
+#Ignore Terraform Version Lock files
+.terraform.lock.hcl
