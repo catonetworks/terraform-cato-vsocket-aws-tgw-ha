@@ -1,7 +1,7 @@
 
 module "cato_deployment" {
   source                      = "catonetworks/vsocket-aws-ha-vpc/cato"
-  version                     = "~> 0.0.10"
+  version                     = "~> 0.1.0"
   token                       = var.token
   account_id                  = var.account_id
   vpc_id                      = var.vpc_id
