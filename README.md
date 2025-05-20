@@ -142,7 +142,7 @@ Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cato_deployment"></a> [cato\_deployment](#module\_cato\_deployment) | catonetworks/vsocket-aws-ha-vpc/cato | ~> 0.0.10 |
+| <a name="module_cato_deployment"></a> [cato\_deployment](#module\_cato\_deployment) | catonetworks/vsocket-aws-ha-vpc/cato | ~> 0.1.0 |
 
 ## Resources
 
