@@ -40,6 +40,7 @@ Reference the resources as input variables with the following syntax:
 ## NOTE
 - For help with finding exact sytax to match site location for city, state_name, country_name and timezone, please refer to the [cato_siteLocation data source](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/siteLocation).
 - For help with finding a license id to assign, please refer to the [cato_licensingInfo data source](https://registry.terraform.io/providers/catonetworks/cato/latest/docs/data-sources/licensingInfo).
+- Creation of the Default Route in the Transit Gateway Route-Table is Feature-Flagged, to allow for planned migration.  Defaults to False (Don't Build)
 
 ## Usage
 
@@ -63,33 +64,34 @@ variable "region" {
 
 
 module "tgw" {
-  source                      = "catonetworks/vsocket-aws-tgw-ha/cato"
-  token                       = var.token
-  account_id                  = var.account_id
-  vpc_id                      = null
-  internet_gateway_id         = null
-  key_pair                    = "Your-key-pair-name-here"
-  vpc_network_range           = "10.132.0.0/22"
-  native_network_range        = "10.128.0.0/13"
-  subnet_range_mgmt_primary   = "10.132.0.0/25"
-  subnet_range_mgmt_secondary = "10.132.0.128/25"
-  subnet_range_wan_primary    = "10.132.1.0/25"
-  subnet_range_wan_secondary  = "10.132.1.128/25"
-  subnet_range_lan_primary    = "10.132.2.0/25"
-  subnet_range_lan_secondary  = "10.132.2.128/25"
-  subnet_range_tgw_primary    = "10.132.3.0/25"
-  subnet_range_tgw_secondary  = "10.132.3.128/25"
-  mgmt_eni_primary_ip         = "10.132.0.5"
-  mgmt_eni_secondary_ip       = "10.132.0.133"
-  wan_eni_primary_ip          = "10.132.1.5"
-  wan_eni_secondary_ip        = "10.132.1.133"
-  lan_eni_primary_ip          = "10.132.2.5"
-  lan_eni_secondary_ip        = "10.132.2.133"
-  ingress_cidr_blocks         = ["0.0.0.0/0"]
-  site_name                   = "Your-Cato-site-name-here"
-  tgw_id                      = "tgw-01234567890abcdef"
-  tgw_route_table_id          = "tgw-rtb-01234567890abcdef"
-  site_description            = "Your Cato site desc here"
+  source                          = "catonetworks/vsocket-aws-tgw-ha/cato"
+  token                           = var.token
+  account_id                      = var.account_id
+  vpc_id                          = null
+  internet_gateway_id             = null
+  key_pair                        = "Your-key-pair-name-here"
+  vpc_network_range               = "10.132.0.0/22"
+  native_network_range            = "10.128.0.0/13"
+  subnet_range_mgmt_primary       = "10.132.0.0/25"
+  subnet_range_mgmt_secondary     = "10.132.0.128/25"
+  subnet_range_wan_primary        = "10.132.1.0/25"
+  subnet_range_wan_secondary      = "10.132.1.128/25"
+  subnet_range_lan_primary        = "10.132.2.0/25"
+  subnet_range_lan_secondary      = "10.132.2.128/25"
+  subnet_range_tgw_primary        = "10.132.3.0/25"
+  subnet_range_tgw_secondary      = "10.132.3.128/25"
+  mgmt_eni_primary_ip             = "10.132.0.5"
+  mgmt_eni_secondary_ip           = "10.132.0.133"
+  wan_eni_primary_ip              = "10.132.1.5"
+  wan_eni_secondary_ip            = "10.132.1.133"
+  lan_eni_primary_ip              = "10.132.2.5"
+  lan_eni_secondary_ip            = "10.132.2.133"
+  ingress_cidr_blocks             = ["0.0.0.0/0"]
+  site_name                       = "Your-Cato-site-name-here"
+  tgw_id                          = "tgw-01234567890abcdef"
+  tgw_route_table_id              = "tgw-rtb-01234567890abcdef"
+  site_description                = "Your Cato site desc here"
+  build_default_tgw_route_to_cato = false # False = Don't Build the 0.0.0.0/0 Route In The TGW RT
   site_location = {
     city         = "New York City"
     country_code = "US"
@@ -164,6 +166,7 @@ Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | Cato account ID | `number` | n/a | yes |
 | <a name="input_baseurl"></a> [baseurl](#input\_baseurl) | Cato Networks API URL | `string` | `"https://api.catonetworks.com/api/v1/graphql2"` | no |
+| <a name="input_build_default_tgw_route_to_cato"></a> [build\_default\_tgw\_route\_to\_cato](#input\_build\_default\_tgw\_route\_to\_cato) | Whether or Not to Build a default route in TGW Route Table to point at cato | `boolean` | `false` | no |
 | <a name="input_ingress_cidr_blocks"></a> [ingress\_cidr\_blocks](#input\_ingress\_cidr\_blocks) | Set CIDR to receive traffic from the specified IPv4 CIDR address ranges<br/>	For example x.x.x.x/32 to allow one specific IP address access, 0.0.0.0/0 to allow all IP addresses access, or another CIDR range<br/>    Best practice is to allow a few IPs as possible<br/>    The accepted input format is Standard CIDR Notation, e.g. X.X.X.X/X | `list(any)` | `null` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The instance type of the vSocket | `string` | `"c5.xlarge"` | no |
 | <a name="input_internet_gateway_id"></a> [internet\_gateway\_id](#input\_internet\_gateway\_id) | Specify an Internet Gateway ID to use. If not specified, a new Internet Gateway will be created. | `string` | `null` | no |

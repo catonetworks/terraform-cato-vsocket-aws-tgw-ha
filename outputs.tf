@@ -24,12 +24,12 @@ output "transit_gateway_secondary_subnet_cidr" {
 }
 
 output "transit_gateway_id" {
-  value = var.tgw_id
+  value       = var.tgw_id
   description = "The ID of the Transit Gateway"
-  }
+}
 
 output "transit_gateway_routetable_id" {
-  value = var.tgw_route_table_id
+  value       = var.tgw_route_table_id
   description = "The ID of the Transit Gateway Route Table"
 }
 
@@ -191,6 +191,6 @@ output "cato_license_site" {
 }
 
 output "lan_subnet_route_table_id" {
-  value = module.cato_deployment.lan_subnet_route_table_id
+  value       = module.cato_deployment.lan_subnet_route_table_id
   description = "The ID of the LAN Subnet Route Table"
 }

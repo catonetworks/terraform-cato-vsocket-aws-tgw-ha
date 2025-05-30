@@ -228,4 +228,8 @@ variable "tgw_route_table_id" {
   type        = string
 }
 
-
+variable "build_default_tgw_route_to_cato" {
+  description = "Whether or Not to Build a default route in TGW Route Table to point at cato"
+  type        = boolean
+  default     = false
+}
