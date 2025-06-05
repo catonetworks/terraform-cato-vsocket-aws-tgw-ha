@@ -10,3 +10,8 @@
 
 ### Features 
 - Created Feature Flag for Default Route in TGW Creation to Enable Planned Migration. 
+
+## 0.0.3 (2025-06-05)
+
+### Features
+- Fixed typo found in variables.tf
