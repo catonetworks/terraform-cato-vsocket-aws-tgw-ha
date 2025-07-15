@@ -25,14 +25,6 @@ variable "site_description" {
   type        = string
 }
 
-variable "native_network_range" {
-  type        = string
-  description = <<EOT
-  	Choose a unique range for your new vsocket site that does not conflict with the rest of your Wide Area Network.
-    The accepted input format is Standard CIDR Notation, e.g. X.X.X.X/X
-	EOT
-}
-
 variable "vpc_network_range" {
   type        = string
   description = <<EOT
@@ -52,13 +44,19 @@ variable "site_type" {
 }
 
 variable "site_location" {
-  description = "The Location of the Site"
+  description = "Site location which is used by the Cato Socket to connect to the closest Cato PoP. If not specified, the location will be derived from the Azure region dynamicaly."
   type = object({
     city         = string
     country_code = string
     state_code   = string
     timezone     = string
   })
+  default = {
+    city         = null
+    country_code = null
+    state_code   = null ## Optional - for countries with states
+    timezone     = null
+  }
 }
 
 ## VPC Module Variables
@@ -74,6 +72,16 @@ variable "internet_gateway_id" {
   default     = null
 }
 
+variable "instance_type" {
+  description = "The instance type of the vSocket"
+  type        = string
+  default     = "c5.xlarge"
+  validation {
+    condition     = contains(["d2.xlarge", "c3.xlarge", "t3.large", "t3.xlarge", "c4.xlarge", "c5.xlarge", "c5d.xlarge", "c5n.xlarge"], var.instance_type)
+    error_message = "The instance_type variable must be one of 'd2.xlarge','c3.xlarge','t3.large','t3.xlarge','c4.xlarge','c5.xlarge','c5d.xlarge','c5n.xlarge'."
+  }
+}
+
 variable "ingress_cidr_blocks" {
   type        = list(any)
   description = <<EOT
@@ -85,14 +93,9 @@ variable "ingress_cidr_blocks" {
   default     = null
 }
 
-variable "instance_type" {
-  description = "The instance type of the vSocket"
+variable "region" {
+  description = "AWS Region to build in"
   type        = string
-  default     = "c5.xlarge"
-  validation {
-    condition     = contains(["d2.xlarge", "c3.xlarge", "t3.large", "t3.xlarge", "c4.xlarge", "c5.xlarge", "c5d.xlarge", "c5n.xlarge"], var.instance_type)
-    error_message = "The instance_type variable must be one of 'd2.xlarge','c3.xlarge','t3.large','t3.xlarge','c4.xlarge','c5.xlarge','c5d.xlarge','c5n.xlarge'."
-  }
 }
 
 variable "key_pair" {
@@ -232,4 +235,18 @@ variable "build_default_tgw_route_to_cato" {
   description = "Whether or Not to Build a default route in TGW Route Table to point at cato"
   type        = bool
   default     = false
+}
+
+variable "routed_networks" {
+  description = <<EOF
+  A map of routed networks to be accessed behind the vSocket site. The key is the network name and the value is the CIDR range.
+  Example: 
+  routed_networks = {
+  "Peered-VNET-1" = "10.100.1.0/24"
+  "On-Prem-Network" = "192.168.50.0/24"
+  "Management-Subnet" = "10.100.2.0/25"
+  }
+  EOF
+  type        = map(string)
+  default     = {} # Default to an empty map instead of null.
 }

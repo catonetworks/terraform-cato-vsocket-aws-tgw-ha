@@ -1,11 +1,10 @@
 
 module "cato_deployment" {
   source                      = "catonetworks/vsocket-aws-ha-vpc/cato"
-  version                     = "~> 0.1.0"
+  version                     = "=> 0.1.3"
   token                       = var.token
   account_id                  = var.account_id
   vpc_id                      = var.vpc_id
-  ingress_cidr_blocks         = var.ingress_cidr_blocks
   lan_ingress_cidr_blocks     = var.ingress_cidr_blocks
   key_pair                    = var.key_pair
   subnet_range_mgmt_primary   = var.subnet_range_mgmt_primary
@@ -21,11 +20,12 @@ module "cato_deployment" {
   lan_eni_primary_ip          = var.lan_eni_primary_ip
   lan_eni_secondary_ip        = var.lan_eni_secondary_ip
   vpc_range                   = var.vpc_network_range
-  native_network_range        = var.native_network_range
   site_name                   = var.site_name
   site_description            = var.site_description
   site_location               = var.site_location
   tags                        = var.tags
+  routed_networks             = var.routed_networks
+  region                      = var.region
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "cato_vpc" {
@@ -39,7 +39,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "cato_vpc" {
 
 resource "aws_route" "cato_private_to_tgw" {
   route_table_id         = module.cato_deployment.lan_subnet_route_table_id
-  destination_cidr_block = var.native_network_range
+  for_each               = var.routed_networks
+  destination_cidr_block = each.value
   transit_gateway_id     = var.tgw_id
   depends_on             = [aws_ec2_transit_gateway_vpc_attachment.cato_vpc]
 }
