@@ -35,3 +35,6 @@
 - **DEPENDENCIES**: Updated Cato provider version from `~> 0.0.23` to `~> 0.0.27`
 - **MODULE**: Updated underlying vsocket module source reference
 - **DOCUMENTATION**: Updated README.md with new variable usage examples
+
+## 0.0.5 (2025-07-16)
+ - Fix incorrect version syntax in module call
