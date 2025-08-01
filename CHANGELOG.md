@@ -38,3 +38,10 @@
 
 ## 0.0.5 (2025-07-16)
  - Fix incorrect version syntax in module call
+
+## 0.0.6 (2025-08-01)
+
+### Features
+ - Updated to use latest provider version 
+  - Adjusted routed_networks call to include interface_index 
+ - Version Lock to Provider version 0.0.38 or greater
