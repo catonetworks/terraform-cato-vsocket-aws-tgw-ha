@@ -45,3 +45,9 @@
  - Updated to use latest provider version 
   - Adjusted routed_networks call to include interface_index 
  - Version Lock to Provider version 0.0.38 or greater
+
+## 0.0.7 (2026-01-20)
+
+### Features
+ - Added license id and bw to nested module. 
+

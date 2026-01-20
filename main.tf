@@ -26,6 +26,8 @@ module "cato_deployment" {
   tags                        = var.tags
   routed_networks             = var.routed_networks
   region                      = var.region
+  license_id                  = var.license_id
+  license_bw                  = var.license_bw
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "cato_vpc" {
