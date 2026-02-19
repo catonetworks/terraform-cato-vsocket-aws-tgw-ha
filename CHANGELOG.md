@@ -51,3 +51,6 @@
 ### Features
  - Added license id and bw to nested module. 
 
+## 0.0.8 (2026-02-18)
+### Features
+- Reverted to provider version 0.0.57 to address local_ip and gateway api param issue in state
