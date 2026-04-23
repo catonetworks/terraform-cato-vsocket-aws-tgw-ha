@@ -121,8 +121,8 @@ For more information on site_location syntax, use the [Cato CLI](https://github.
 
 ```bash
 $ pip3 install catocli
-$ export CATO_TOKEN="your-api-token-here"
-$ export CATO_ACCOUNT_ID="your-account-id"
+$ export TF_VAR_CATO_TOKEN="your-api-token-here"
+$ export TF_VAR_CATO_ACCOUNT_ID="your-account-id"
 $ catocli query siteLocation -h
 $ catocli query siteLocation '{"filters":[{"search": "San Diego","field":"city","operation":"exact"}]}' -p
 ```
@@ -140,27 +140,27 @@ Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.98.0 |
-| <a name="requirement_cato"></a> [cato](#requirement\_cato) | >= 0.0.38 |
+| <a name="requirement_cato"></a> [cato](#requirement\_cato) | 0.0.57-1 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.98.0 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
-| <a name="module_cato_deployment"></a> [cato\_deployment](#module\_cato\_deployment) | catonetworks/vsocket-aws-ha-vpc/cato | >= 0.1.5 |
+| ---- | ------ | ------- |
+| <a name="module_cato_deployment"></a> [cato\_deployment](#module\_cato\_deployment) | catonetworks/vsocket-aws-ha-vpc/cato | >= 0.1.10 |
 
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_ec2_transit_gateway_route.all-zeros-cato](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_route) | resource |
 | [aws_ec2_transit_gateway_vpc_attachment.cato_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_vpc_attachment) | resource |
 | [aws_route.cato_private_to_tgw](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route) | resource |
@@ -174,7 +174,7 @@ Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | Cato account ID | `number` | n/a | yes |
 | <a name="input_baseurl"></a> [baseurl](#input\_baseurl) | Cato Networks API URL | `string` | `"https://api.catonetworks.com/api/v1/graphql2"` | no |
 | <a name="input_build_default_tgw_route_to_cato"></a> [build\_default\_tgw\_route\_to\_cato](#input\_build\_default\_tgw\_route\_to\_cato) | Whether or Not to Build a default route in TGW Route Table to point at cato | `bool` | `false` | no |
@@ -214,7 +214,7 @@ Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_aws_availability_zones_out"></a> [aws\_availability\_zones\_out](#output\_aws\_availability\_zones\_out) | List of availability zones used for this deployment |
 | <a name="output_aws_iam_instance_profile_name"></a> [aws\_iam\_instance\_profile\_name](#output\_aws\_iam\_instance\_profile\_name) | Name of the IAM instance profile assigned to vSocket EC2 instances |
 | <a name="output_aws_iam_policy_arn"></a> [aws\_iam\_policy\_arn](#output\_aws\_iam\_policy\_arn) | ARN of the IAM policy attached to the HA role |
@@ -255,3 +255,4 @@ Apache 2 Licensed. See [LICENSE](https://github.com/catonetworks/terraform-cato-
 | <a name="output_waneip_primary"></a> [waneip\_primary](#output\_waneip\_primary) | Public IP address of the primary WAN Elastic IP |
 | <a name="output_waneip_secondary"></a> [waneip\_secondary](#output\_waneip\_secondary) | Public IP address of the secondary WAN Elastic IP |
 <!-- END_TF_DOCS -->
+
