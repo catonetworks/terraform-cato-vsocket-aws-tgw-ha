@@ -1,20 +1,32 @@
 # Changelog
 
-## 0.0.1 (2025-05-19)
+## 0.0.10 (2026-06-30)
+
+### Changed
+- Updated Cato provider requirement to >= 0.0.88
+
+## 0.0.9 (2026-02-18)
+### Features
+- Incrementing version of vsocket-aws-ha-vpc nested module to >= 0.1.10
+
+## 0.0.8 (2026-02-18)
+### Features
+- Reverted to provider version 0.0.57 to address local_ip and gateway api param issue in state
+
+## 0.0.7 (2026-01-20)
 
 ### Features
-- Initial commit with single socket instance with 3 NICs, creating full vpc
-- Requires 0.0.10 of catonetworks/vsocket-aws-ha-vpc/cato module
+ - Added license id and bw to nested module. 
 
-## 0.0.2 (2025-05-30)
-
-### Features 
-- Created Feature Flag for Default Route in TGW Creation to Enable Planned Migration. 
-
-## 0.0.3 (2025-06-05)
+## 0.0.6 (2025-08-01)
 
 ### Features
-- Fixed typo found in variables.tf
+ - Updated to use latest provider version 
+  - Adjusted routed_networks call to include interface_index 
+ - Version Lock to Provider version 0.0.38 or greater
+
+## 0.0.5 (2025-07-16)
+ - Fix incorrect version syntax in module call
 
 ## 0.0.4 (2025-06-27)
 
@@ -36,25 +48,18 @@
 - **MODULE**: Updated underlying vsocket module source reference
 - **DOCUMENTATION**: Updated README.md with new variable usage examples
 
-## 0.0.5 (2025-07-16)
- - Fix incorrect version syntax in module call
-
-## 0.0.6 (2025-08-01)
+## 0.0.3 (2025-06-05)
 
 ### Features
- - Updated to use latest provider version 
-  - Adjusted routed_networks call to include interface_index 
- - Version Lock to Provider version 0.0.38 or greater
+- Fixed typo found in variables.tf
 
-## 0.0.7 (2026-01-20)
+## 0.0.2 (2025-05-30)
+
+### Features 
+- Created Feature Flag for Default Route in TGW Creation to Enable Planned Migration. 
+
+## 0.0.1 (2025-05-19)
 
 ### Features
- - Added license id and bw to nested module. 
-
-## 0.0.8 (2026-02-18)
-### Features
-- Reverted to provider version 0.0.57 to address local_ip and gateway api param issue in state
-
-## 0.0.9 (2026-02-18)
-### Features
-- Incrementing version of vsocket-aws-ha-vpc nested module to >= 0.1.10
+- Initial commit with single socket instance with 3 NICs, creating full vpc
+- Requires 0.0.10 of catonetworks/vsocket-aws-ha-vpc/cato module
